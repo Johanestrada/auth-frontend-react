@@ -1,0 +1,7 @@
+/* =============================================
+   LOGIN — Estilos específicos de la página Login
+   ============================================= */
+
+.login-page .form-icon {
+    color: var(--color-primary-light);
+}

@@ -1,8 +1,7 @@
 import { useState } from 'react'
-
+import '../styles/pages/login.css'
 
 function Login({ onLoginSuccess }) {
-    //Estados
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -13,9 +12,7 @@ function Login({ onLoginSuccess }) {
         return emailRegex.test(email);
     }
 
-    //Funcion login
     const handleLogin = async () => {
-
         setError("");
 
         if (!email || !password) {
@@ -48,10 +45,8 @@ function Login({ onLoginSuccess }) {
             }
 
             const datos = await response.json();
-
             console.log("Login exitoso");
             console.log("TOKEN: ", datos.token);
-
             onLoginSuccess(datos.token);
 
         } catch (error) {
@@ -63,34 +58,47 @@ function Login({ onLoginSuccess }) {
     };
 
     return (
-        <>
-            <h2>Login</h2>
+        <div className="login-page">
+            <div className="form-header">
+                <h2>Iniciar Sesión</h2>
+                <p>Ingresa tus credenciales para continuar</p>
+            </div>
 
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+            <div className="form-group">
+                <label htmlFor="login-email">Correo electrónico</label>
+                <input
+                    id="login-email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
 
-            <br /><br />
+            <div className="form-group">
+                <label htmlFor="login-password">Contraseña</label>
+                <input
+                    id="login-password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
 
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <br /><br />
-
-            <button onClick={handleLogin} disabled={loading}>{loading ? "Enviando..." : "Iniciar Sesión"}</button>
+            <button
+                className="btn-primary"
+                onClick={handleLogin}
+                disabled={loading}
+            >
+                {loading ? "Ingresando..." : "Iniciar Sesión"}
+            </button>
 
             {error && (
-                <div style={{ color: '#ff6b6b', marginTop: 12 }}>{error}</div>
+                <div className="error-message">{error}</div>
             )}
-        </>
+        </div>
     );
-
 }
+
 export default Login;

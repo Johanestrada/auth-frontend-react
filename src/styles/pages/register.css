@@ -1,0 +1,7 @@
+/* =============================================
+   REGISTER — Estilos específicos de la página Register
+   ============================================= */
+
+.register-page .form-icon {
+    color: var(--color-accent);
+}

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
+import '../styles/pages/profile.css'
 
 function Profile() {
-    //estados
     const [user, setUser] = useState(null);
 
-    //funcion para obtener el perfil del usuario
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -31,19 +30,40 @@ function Profile() {
 
         fetchProfile();
     }, []);
+
     return (
-        <div>
+        <div className="profile-page">
             {user ? (
-                <p>Usuario: {user.email}</p>
+                <>
+                    <div className="profile-avatar">
+                        {user.email ? user.email.charAt(0).toUpperCase() : "U"}
+                    </div>
+
+                    <p className="profile-greeting">¡Bienvenido!</p>
+                    <p className="profile-subtitle">Tu sesión está activa</p>
+
+                    <div className="profile-info">
+                        <p className="profile-label">Email</p>
+                        <p className="profile-email">{user.email}</p>
+                    </div>
+                </>
             ) : (
-                <p>Cargando perfil...</p>
+                <div className="profile-loading">
+                    <span className="spinner"></span>
+                    Cargando perfil...
+                </div>
             )}
 
-            <button onClick={() => {
-                localStorage.removeItem("token");
-                window.location.reload();
-            }}>
-                Cerrar sesión
+            <div className="profile-divider"></div>
+
+            <button
+                className="btn-danger"
+                onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.reload();
+                }}
+            >
+                Cerrar Sesión
             </button>
         </div>
     );

@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import '../styles/pages/register.css'
 
 function Register() {
-    //Estados
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -13,7 +13,6 @@ function Register() {
         return emailRegex.test(email);
     }
 
-    //Funcion register
     const handleRegister = async () => {
         setMessage("");
         setError("");
@@ -29,7 +28,7 @@ function Register() {
         }
 
         if (password.length < 8) {
-            setError("La contraseña debe tener al menos 8 caracteres");
+            setError("La contraseña debe tener al menos 8 caracteres.");
             return;
         }
 
@@ -53,7 +52,7 @@ function Register() {
                 return;
             }
 
-            setMessage("Registro exitoso. Ahora puedes iniciar sesión. :)");
+            setMessage("¡Registro exitoso! Ahora puedes iniciar sesión.");
             setEmail("");
             setPassword("");
         } catch (err) {
@@ -65,30 +64,45 @@ function Register() {
     };
 
     return (
-        <>
-            <h2>Register</h2>
+        <div className="register-page">
+            <div className="form-header">
+                <h2>Crear Cuenta</h2>
+                <p>Regístrate para empezar</p>
+            </div>
 
-            <input type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
+            <div className="form-group">
+                <label htmlFor="register-email">Correo electrónico</label>
+                <input
+                    id="register-email"
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
 
-            <br /><br />
+            <div className="form-group">
+                <label htmlFor="register-password">Contraseña</label>
+                <input
+                    id="register-password"
+                    type="password"
+                    placeholder="Mínimo 8 caracteres"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
 
-            <input type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+            <button
+                className="btn-primary"
+                onClick={handleRegister}
+                disabled={loading}
+            >
+                {loading ? "Registrando..." : "Crear Cuenta"}
+            </button>
 
-            <br /><br />
-
-            <button onClick={handleRegister} disabled={loading}>{loading ? "Enviando..." : "Registrarse"}</button>
-
-            {error && <p style={{ color: '#ff6b6b' }}>{error}</p>}
-            {message && <p style={{ color: '#2ecc71' }}>{message}</p>}
-        </>
+            {error && <div className="error-message">{error}</div>}
+            {message && <div className="success-message">{message}</div>}
+        </div>
     );
 }
 

@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="container">
-      <div className="card">
+      <div className="card fade-in">
         {token ? (
           <Profile />
         ) : showRegister ? (
@@ -30,10 +30,10 @@ function App() {
 
         {!token && (
           <button
-            style={{ marginTop: "20px", width: "100%" }}
+            className="btn-secondary"
             onClick={() => setShowRegister(!showRegister)}
           >
-            {showRegister ? "Volver al Login" : "Ir a Registro"}
+            {showRegister ? "← Volver al Login" : "Crear una cuenta"}
           </button>
         )}
       </div>
