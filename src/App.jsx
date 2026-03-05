@@ -1,64 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState, useEffect } from "react";
+import Login from "./pages/Login.jsx";
+import Profile from "./pages/Profile.jsx";
+import Register from "./pages/Register.jsx";
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [showRegister, setShowRegister] = useState(false);
+  const [token, setToken] = useState(null);
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Credenciales incorrectas");
-      }
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) setToken(savedToken);
+  }, []);
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-
-      console.log("Login exitoso");
-      console.log("Respuesta del backend:", data);
-      console.log("TOKEN:", data.token);
-
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-    }
+  const handleLoginSuccess = (token) => {
+    localStorage.setItem("token", token);
+    setToken(token);
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="container">
+      <div className="card">
+        {token ? (
+          <Profile />
+        ) : showRegister ? (
+          <Register />
+        ) : (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        )}
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <br /><br />
-
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <br /><br />
-
-      <button onClick={handleLogin}>
-        Login
-      </button>
+        {!token && (
+          <button
+            style={{ marginTop: "20px", width: "100%" }}
+            onClick={() => setShowRegister(!showRegister)}
+          >
+            {showRegister ? "Volver al Login" : "Ir a Registro"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
